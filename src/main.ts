@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-const gamePattern: Array<string> = [];
+let gamePattern: Array<string> = [];
 let userClickedPattern: Array<string> = [];
 let isFirstTimePressingAKey = true;
 let currentGameLevel = 0;
@@ -31,7 +31,8 @@ $('.btn').on('click', function (event) {
 		playSound('wrong');
 		$(document.body).addClass('game-over');
 		setTimeout(() => $(document.body).removeClass('game-over'), 200);
-		$('#level-title').html('Game Over, Press Any Key to Restart');
+
+		startOver();
 	}
 
 	if (result && userClickedPattern.length === gamePattern.length) {
@@ -73,6 +74,14 @@ function playSound(name: string) {
 function animatePress(element: JQuery<HTMLElement>) {
 	element.addClass('pressed');
 	setTimeout(() => element.removeClass('pressed'), 100);
+}
+
+function startOver() {
+	$('#level-title').html('Game Over, Press Any Key to Restart');
+	currentGameLevel = 0;
+	gamePattern = [];
+	userClickedPattern = [];
+	isFirstTimePressingAKey = true;
 }
 
 export {};
