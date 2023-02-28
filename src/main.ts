@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 const gamePattern: Array<string> = [];
-const userClickedPattern: Array<string> = [];
+let userClickedPattern: Array<string> = [];
 let isFirstTimePressingAKey = true;
 let currentGameLevel = 0;
 
@@ -10,6 +10,7 @@ function nextSequence() {
 	presentLevel(currentGameLevel);
 
 	const buttonColors = Object.freeze(['red', 'blue', 'green', 'yellow']);
+
 	const randomNumber = Math.floor(Math.random() * 4);
 	const randomChosenColor = buttonColors[randomNumber];
 
@@ -22,6 +23,14 @@ function nextSequence() {
 $('.btn').on('click', function (event) {
 	const userChosenColor = event.currentTarget.id;
 	userClickedPattern.push(userChosenColor);
+
+	const indexOfLastAnswer = userClickedPattern.length - 1;
+	const result = checkAnswer(indexOfLastAnswer);
+
+	if (result && userClickedPattern.length === gamePattern.length) {
+		userClickedPattern = [];
+		setTimeout(nextSequence, 1000);
+	}
 
 	console.log(userClickedPattern);
 
@@ -37,6 +46,10 @@ $(document).on('keypress', function (_) {
 		nextSequence();
 	}
 });
+
+function checkAnswer(indexOfLastAnswer: number) {
+	return userClickedPattern[indexOfLastAnswer] === gamePattern[indexOfLastAnswer];
+}
 
 function presentLevel(gameLevel: number) {
 	$('#level-title').html(`Level ${gameLevel}`);
