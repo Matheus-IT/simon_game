@@ -27,6 +27,13 @@ $('.btn').on('click', function (event) {
 	const indexOfLastAnswer = userClickedPattern.length - 1;
 	const result = checkAnswer(indexOfLastAnswer);
 
+	if (result === false) {
+		playSound('wrong');
+		$(document.body).addClass('game-over');
+		setTimeout(() => $(document.body).removeClass('game-over'), 200);
+		$('#level-title').html('Game Over, Press Any Key to Restart');
+	}
+
 	if (result && userClickedPattern.length === gamePattern.length) {
 		userClickedPattern = [];
 		setTimeout(nextSequence, 1000);
